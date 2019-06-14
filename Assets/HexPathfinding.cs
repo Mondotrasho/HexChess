@@ -127,7 +127,13 @@ public class HexPathfinding : MonoBehaviour
             }
             else
             {
-                selectedPiece.GetComponent<HexPiece>().Move(Start, TileUI.MousePos, path, dictionary);
+                if(TileUI.MousePos == points[points.Count - 1])
+                 selectedPiece.GetComponent<HexPiece>().Move(Start, TileUI.MousePos, path, dictionary);
+                else
+                {
+                    Debug.Log("Error");
+                    selectedPiece.GetComponent<HexPiece>().Move(Start, points[points.Count - 1], path, dictionary);
+                }
             }
 
             Turnmanager.Activate(selectedPiece);

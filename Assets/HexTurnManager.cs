@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class HexTurnManager : MonoBehaviour
 {
@@ -14,16 +11,21 @@ public class HexTurnManager : MonoBehaviour
     public TextMeshProUGUI APText;
     public TextMeshProUGUI ActiveTeamText;
     public TextMeshProUGUI ActivePieceText;
-
+    public TextMeshProUGUI RemainingPieceAPText;
     private Dictionary<Hex, HexCollection> dictionary;
+    private HexPathfinding pathfinder;
 
-    public void init(Dictionary<Hex, HexCollection> d)
+
+    public void init(Dictionary<Hex, HexCollection> d, HexPathfinding p)
     {
         dictionary = d;
+        pathfinder = p;
     }
 
     public void SwitchTeam()
     {
+        pathfinder.selectedPiece = null;
+
         var TilesWithPieces = HexPiece.ReturnAllHexWithPieces(dictionary);
 
         foreach (var Tile in TilesWithPieces)
@@ -51,16 +53,18 @@ public class HexTurnManager : MonoBehaviour
         
         if (pathfinder.selectedPiece != null)
         {
+            RemainingPieceAPText.text = "AP : " + pathfinder.selectedPiece.GetComponent<HexStats>().remaining_AP.ToString();
             ActivePieceText.text = pathfinder.selectedPiece.name.ToString();
         }
         else
         {
+            RemainingPieceAPText.text = "";
             ActivePieceText.text = "None";
         }
         if (ActiveTeam == HexCollection.Team.White)
-            ActiveTeamText.text = "White";
+            ActiveTeamText.text = "White Turn";
         if (ActiveTeam == HexCollection.Team.Black)
-            ActiveTeamText.text = "Black";
+            ActiveTeamText.text = "Black Turn";
     }
 
     public bool CheckTotalAP()

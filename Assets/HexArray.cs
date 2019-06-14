@@ -27,7 +27,7 @@ public class HexArray : MonoBehaviour
 
     void Start()
     {
-        Turnmanager.init(ObjectsDictionary);
+        Turnmanager.init(ObjectsDictionary,pathfinding);
         //because we are instatiating
         HexTile.DeleteOldTiles(Map_Tiles);
         HexPiece.DeleteOldPieces(Map_Pieces);
