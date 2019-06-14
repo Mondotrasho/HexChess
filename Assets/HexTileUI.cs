@@ -19,6 +19,7 @@ public class HexTileUI : MonoBehaviour
     public void initMouse()
     {
         mouseObj.init();
+        OldPos = new Hex(int.MaxValue, int.MaxValue);
     }
 
     public void updateMousePos(Layout layout)
@@ -84,30 +85,44 @@ public class HexTileUI : MonoBehaviour
 
     public static void HighlightLineHexes(Dictionary<Hex, HexCollection> dictionary, Layout layout,GameObject ParentObj, HexTile UIGlowbob, HexPathfinding pathfinder, HexTileUI tileUi)
     {
-        HexTileUI.DeleteOldTileUI(ParentObj);
+
 
         if (dictionary.ContainsKey(pathfinder.Start) && dictionary.ContainsKey(tileUi.MousePos))
         {
-            List<Hex> positions = pathfinder.BreadthFirstSearch(pathfinder.Start, tileUi.MousePos);
+            List<Hex> positions = new List<Hex>();
 
+            positions = pathfinder.BreadthFirstSearch(pathfinder.Start, tileUi.MousePos);
+            positions.Reverse();
 
-            List<GameObject> LineObj = new List<GameObject>();
-            foreach (Hex point in positions)
+            while (positions.Count > pathfinder.selectedPiece.GetComponent<HexStats>().Range)
             {
-                var pos = Hex.HexToVec3(point, layout);
-                var mod = new Vector3(0, dictionary[point].Tile.Yextent * 2);
-                var clone = Instantiate(UIGlowbob.TileObject, pos + mod, Quaternion.identity);
-                clone.GetComponent<Bob>().originalY = mod.y;
-                clone.name = "Line";
-                LineObj.Add(clone);
+                Debug.Log("Longer NOW");
+                positions.RemoveAt(positions.Count - 1);
+                //positions.Capacity = pathfinder.selectedPiece.GetComponent<HexStats>().Range;
             }
 
-            int multi = 1;
-            foreach (var obj in LineObj)
+            if (positions != pathfinder.OldUIPath)
             {
-                obj.transform.parent = ParentObj.transform;
-                obj.GetComponent<Bob>().timeOffset = (6.3f / LineObj.Count) * multi;
-                multi++;
+                HexTileUI.DeleteOldTileUI(ParentObj);
+                pathfinder.OldUIPath = positions;
+                List<GameObject> LineObj = new List<GameObject>();
+                foreach (Hex point in positions)
+                {
+                    var pos = Hex.HexToVec3(point, layout);
+                    var mod = new Vector3(0, dictionary[point].Tile.Yextent * 2);
+                    var clone = Instantiate(UIGlowbob.TileObject, pos + mod, Quaternion.identity);
+                    clone.GetComponent<Bob>().originalY = mod.y;
+                    clone.name = "Line";
+                    LineObj.Add(clone);
+                }
+
+                int multi = 1;
+                foreach (var obj in LineObj)
+                {
+                    obj.transform.parent = ParentObj.transform;
+                    obj.GetComponent<Bob>().timeOffset = (6.3f / LineObj.Count) * multi;
+                    multi++;
+                }
             }
         }
 

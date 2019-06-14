@@ -11,12 +11,12 @@ public class HexPathfinding : MonoBehaviour
     private Dictionary<Hex, HexCollection> dictionary;
 
     public List<Hex> points = new List<Hex>();
-    Hashtable OldCameFrom = new Hashtable();
     public Hex oldStart;
     public Hex oldEnd;
     public List<Hex> OldPath = new List<Hex>();
     public GameObject selectedPiece = null;
     private HexPiece.Team ActiveTeam = HexPiece.Team.White;
+    public List<Hex> OldUIPath = new List<Hex>();
 
     public void Setup(Dictionary<Hex, HexCollection> Dict, Layout lay)
     {
@@ -117,7 +117,14 @@ public class HexPathfinding : MonoBehaviour
         {
             var path = Vector3PathFromHexList(points, dictionary);
 
-            selectedPiece.GetComponent<HexPiece>().Move(Start, End, path, dictionary);
+            while (points.Count > selectedPiece.GetComponent<HexStats>().Range)
+            {
+                Debug.Log("Longer NOW");
+                points.RemoveAt(points.Count - 1);
+                //positions.Capacity = pathfinder.selectedPiece.GetComponent<HexStats>().Range;
+            }
+
+            selectedPiece.GetComponent<HexPiece>().Move(Start, points[points.Count - 1], path, dictionary);
 
             selectedPiece = null;
             Start = EMPTY;

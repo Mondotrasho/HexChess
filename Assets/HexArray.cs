@@ -64,7 +64,12 @@ public class HexArray : MonoBehaviour
         {
             List<Hex> a = pathfinding.BreadthFirstSearch();
             a.Reverse();
-        pathfinding.points = a;
+            List<Hex> Shortened = new List<Hex>();
+            for (int i = 0; i < pathfinding.selectedPiece.GetComponent<HexStats>().Range; i++)
+            {
+                Shortened.Add(a[i]);
+            }
+            pathfinding.points = Shortened;
         }
 
         //if you move make sure to delete the Hex line
@@ -73,16 +78,18 @@ public class HexArray : MonoBehaviour
             HexTileUI.DeleteOldTileUI(UI_Tiles);
         }
     }
-
+    
     private void FixedUpdate()
     {
         //draw the mouse hex
         TileUI.DrawMousehex(ObjectsDictionary);
 
-        //
+
         if (pathfinding.selectedPiece != null && pathfinding.Start != pathfinding.EMPTY)
         {
-            HexTileUI.HighlightLineHexes(ObjectsDictionary, layout, UI_Tiles, GlowBob, pathfinding, TileUI);
+
+                HexTileUI.HighlightLineHexes(ObjectsDictionary, layout, UI_Tiles, GlowBob, pathfinding, TileUI);
+
         }
     }
 
