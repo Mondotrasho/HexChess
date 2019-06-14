@@ -111,7 +111,7 @@ public class HexPathfinding : MonoBehaviour
     }
 
 
-    public bool MovePiece()
+    public bool MovePiece(HexTurnManager Turnmanager)
     {
         if (selectedPiece != null && Start != End && End != EMPTY)
         {
@@ -125,7 +125,7 @@ public class HexPathfinding : MonoBehaviour
             }
 
             selectedPiece.GetComponent<HexPiece>().Move(Start, points[points.Count - 1], path, dictionary);
-
+            Turnmanager.Activate(selectedPiece);
             selectedPiece = null;
             Start = EMPTY;
             End = EMPTY;

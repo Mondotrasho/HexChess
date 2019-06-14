@@ -21,6 +21,8 @@ public class HexArray : MonoBehaviour
     public HexPathfinding pathfinding;
 
     public HexTileUI TileUI;
+
+    public HexTurnManager Turnmanager;
     // Start is called before the first frame update
 
     void Start()
@@ -59,23 +61,38 @@ public class HexArray : MonoBehaviour
         //Mouse input set start and end
         TileUI.MouseHexClick(pathfinding,ObjectsDictionary);
 
-        //if end is set aka not Hex(Max,Max) set pathfinding points
-        if (pathfinding.End != pathfinding.EMPTY)
+        Turnmanager.UpdateTurnManager(pathfinding);
+
+        if (pathfinding.selectedPiece != null)
         {
-            List<Hex> a = pathfinding.BreadthFirstSearch();
-            a.Reverse();
-            List<Hex> Shortened = new List<Hex>();
-            for (int i = 0; i < pathfinding.selectedPiece.GetComponent<HexStats>().Range; i++)
+            if (Turnmanager.CheckAP(pathfinding.selectedPiece))
             {
-                Shortened.Add(a[i]);
+                //if end is set aka not Hex(Max,Max) set pathfinding points
+                if (pathfinding.End != pathfinding.EMPTY)
+                {
+                    List<Hex> a = pathfinding.BreadthFirstSearch();
+                    a.Reverse();
+                    List<Hex> Shortened = new List<Hex>();
+                    for (int i = 0; i < pathfinding.selectedPiece.GetComponent<HexStats>().Range; i++)
+                    {
+                        Shortened.Add(a[i]);
+                    }
+
+                    pathfinding.points = Shortened;
+                }
             }
-            pathfinding.points = Shortened;
         }
 
-        //if you move make sure to delete the Hex line
-        if (pathfinding.MovePiece())
+        if (pathfinding.selectedPiece != null)
         {
-            HexTileUI.DeleteOldTileUI(UI_Tiles);
+            if (Turnmanager.CheckAP(pathfinding.selectedPiece))
+            {
+                //if you move make sure to delete the Hex line
+                if (pathfinding.MovePiece(Turnmanager))
+                {
+                    HexTileUI.DeleteOldTileUI(UI_Tiles);
+                }
+            }
         }
     }
     
@@ -87,9 +104,11 @@ public class HexArray : MonoBehaviour
 
         if (pathfinding.selectedPiece != null && pathfinding.Start != pathfinding.EMPTY)
         {
-
+            if (Turnmanager.CheckAP(pathfinding.selectedPiece))
+            {
                 HexTileUI.HighlightLineHexes(ObjectsDictionary, layout, UI_Tiles, GlowBob, pathfinding, TileUI);
 
+            }
         }
     }
 
