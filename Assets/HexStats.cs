@@ -11,4 +11,9 @@ public class HexStats : MonoBehaviour
     public int remaining_AP = 2;
     public bool Knight = false;
 
+    public void resetAP()
+    {
+        remaining_AP = total_AP;
+    }
+
 }

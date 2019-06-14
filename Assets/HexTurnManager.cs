@@ -15,8 +15,22 @@ public class HexTurnManager : MonoBehaviour
     public TextMeshProUGUI ActiveTeamText;
     public TextMeshProUGUI ActivePieceText;
 
+    private Dictionary<Hex, HexCollection> dictionary;
+
+    public void init(Dictionary<Hex, HexCollection> d)
+    {
+        dictionary = d;
+    }
+
     public void SwitchTeam()
     {
+        var TilesWithPieces = HexPiece.ReturnAllHexWithPieces(dictionary);
+
+        foreach (var Tile in TilesWithPieces)
+        {
+            dictionary[Tile].Piece.gameObject.GetComponent<HexStats>().resetAP();
+        }
+
         if (ActiveTeam == HexCollection.Team.White)
         {
             ActiveTeam = HexCollection.Team.Black;
@@ -25,8 +39,10 @@ public class HexTurnManager : MonoBehaviour
         {
             ActiveTeam = HexCollection.Team.White;
         }
-
+        
         AP_Left = AP;
+
+
     }
 
     public void UpdateTurnManager(HexPathfinding pathfinder)

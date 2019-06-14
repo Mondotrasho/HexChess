@@ -15,7 +15,6 @@ public class HexPathfinding : MonoBehaviour
     public Hex oldEnd;
     public List<Hex> OldPath = new List<Hex>();
     public GameObject selectedPiece = null;
-    private HexPiece.Team ActiveTeam = HexPiece.Team.White;
     public List<Hex> OldUIPath = new List<Hex>();
 
     public void Setup(Dictionary<Hex, HexCollection> Dict, Layout lay)
@@ -111,20 +110,26 @@ public class HexPathfinding : MonoBehaviour
     }
 
 
-    public bool MovePiece(HexTurnManager Turnmanager)
+    public bool MovePiece(HexTurnManager Turnmanager,HexTileUI TileUI)
     {
         if (selectedPiece != null && Start != End && End != EMPTY)
         {
             var path = Vector3PathFromHexList(points, dictionary);
 
-            while (points.Count > selectedPiece.GetComponent<HexStats>().Range)
+            if (points.Count > selectedPiece.GetComponent<HexStats>().Range)
             {
-                Debug.Log("Longer NOW");
-                points.RemoveAt(points.Count - 1);
-                //positions.Capacity = pathfinder.selectedPiece.GetComponent<HexStats>().Range;
+                while (points.Count > selectedPiece.GetComponent<HexStats>().Range)
+                {
+                    Debug.Log("Longer NOW");
+                    points.RemoveAt(points.Count - 1);
+                    selectedPiece.GetComponent<HexPiece>().Move(Start, points[points.Count - 1], path, dictionary);
+                }
+            }
+            else
+            {
+                selectedPiece.GetComponent<HexPiece>().Move(Start, TileUI.MousePos, path, dictionary);
             }
 
-            selectedPiece.GetComponent<HexPiece>().Move(Start, points[points.Count - 1], path, dictionary);
             Turnmanager.Activate(selectedPiece);
             selectedPiece = null;
             Start = EMPTY;

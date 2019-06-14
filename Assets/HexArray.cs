@@ -27,6 +27,7 @@ public class HexArray : MonoBehaviour
 
     void Start()
     {
+        Turnmanager.init(ObjectsDictionary);
         //because we are instatiating
         HexTile.DeleteOldTiles(Map_Tiles);
         HexPiece.DeleteOldPieces(Map_Pieces);
@@ -47,19 +48,15 @@ public class HexArray : MonoBehaviour
         HexTileUI.InstatiateTileUI(GlowBob);
 
         pathfinding.Setup(ObjectsDictionary, layout);
-        var a = HexPiece.ReturnAllHexWithPieces(ObjectsDictionary);
-        var b = HexPiece.ReturnAllHexWithBlackPieces(ObjectsDictionary);
-        var c = HexPiece.ReturnAllHexWithWhitePieces(ObjectsDictionary);
-
-        var aw = PiecePosMovement(a[0]);
     }
 
     private void Update()
     {
         //update the Hex the mouse is in
         TileUI.updateMousePos(layout);
+
         //Mouse input set start and end
-        TileUI.MouseHexClick(pathfinding,ObjectsDictionary);
+        TileUI.MouseHexClick(pathfinding,ObjectsDictionary,Turnmanager);
 
         Turnmanager.UpdateTurnManager(pathfinding);
 
@@ -73,9 +70,16 @@ public class HexArray : MonoBehaviour
                     List<Hex> a = pathfinding.BreadthFirstSearch();
                     a.Reverse();
                     List<Hex> Shortened = new List<Hex>();
-                    for (int i = 0; i < pathfinding.selectedPiece.GetComponent<HexStats>().Range; i++)
+                    if (pathfinding.selectedPiece.GetComponent<HexStats>().Range < a.Count)
                     {
-                        Shortened.Add(a[i]);
+                        for (int i = 0; i < pathfinding.selectedPiece.GetComponent<HexStats>().Range; i++)
+                        {
+                            Shortened.Add(a[i]);
+                        }
+                    }
+                    else
+                    {
+                        Shortened = a;
                     }
 
                     pathfinding.points = Shortened;
@@ -88,7 +92,7 @@ public class HexArray : MonoBehaviour
             if (Turnmanager.CheckAP(pathfinding.selectedPiece))
             {
                 //if you move make sure to delete the Hex line
-                if (pathfinding.MovePiece(Turnmanager))
+                if (pathfinding.MovePiece(Turnmanager,TileUI))
                 {
                     HexTileUI.DeleteOldTileUI(UI_Tiles);
                 }
@@ -99,7 +103,7 @@ public class HexArray : MonoBehaviour
     private void FixedUpdate()
     {
         //draw the mouse hex
-        TileUI.DrawMousehex(ObjectsDictionary);
+        TileUI.DrawMousehex(ObjectsDictionary,Turnmanager);
 
 
         if (pathfinding.selectedPiece != null && pathfinding.Start != pathfinding.EMPTY)

@@ -14,7 +14,6 @@ public class HexTileUI : MonoBehaviour
     public Material OK;
     public Material NOTOK;
     public Material MYPIECE;
-    private HexCollection.Team CurrentTeam = HexCollection.Team.White;
 
     public void initMouse()
     {
@@ -33,7 +32,7 @@ public class HexTileUI : MonoBehaviour
         }
     }
 
-    public void DrawMousehex(Dictionary<Hex, HexCollection> dictionary)
+    public void DrawMousehex(Dictionary<Hex, HexCollection> dictionary,HexTurnManager turnManager)
     {
         if (OldPos != MousePos)
         {
@@ -44,7 +43,7 @@ public class HexTileUI : MonoBehaviour
             OldPos = MousePos;
             DeleteOldTileUI(this.gameObject);
             clone.transform.parent = this.gameObject.transform;
-            if (dictionary[MousePos].Occupiedteam == CurrentTeam)
+            if (dictionary[MousePos].Occupiedteam == turnManager.ActiveTeam)
             {
                 clone.GetComponent<MeshRenderer>().material = MYPIECE;
             }
@@ -156,7 +155,7 @@ public class HexTileUI : MonoBehaviour
     }
 
     public bool cannotclick = false;
-    public void MouseHexClick(HexPathfinding pathfinder, Dictionary<Hex, HexCollection> dictionary)
+    public void MouseHexClick(HexPathfinding pathfinder, Dictionary<Hex, HexCollection> dictionary, HexTurnManager turnManager)
     {
          if (cannotclick)
         {
@@ -164,7 +163,7 @@ public class HexTileUI : MonoBehaviour
         }
          else if (Input.GetMouseButton(0))
         {
-            if ((dictionary[MousePos].Traversable || dictionary[MousePos].Occupiedteam == CurrentTeam) && dictionary.ContainsKey(MousePos))
+            if ((dictionary[MousePos].Traversable || dictionary[MousePos].Occupiedteam == turnManager.ActiveTeam) && dictionary.ContainsKey(MousePos))
             {
                 if (dictionary[MousePos].Piece != null)
                 {
