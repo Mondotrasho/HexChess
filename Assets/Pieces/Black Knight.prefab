@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3408638960583467428}
   - component: {fileID: 1290329431}
   - component: {fileID: 4684629789057445058}
+  - component: {fileID: 1298243149}
   m_Layer: 9
   m_Name: Black Knight
   m_TagString: Untagged
@@ -96,6 +97,7 @@ MonoBehaviour:
   Yextent: 0.65690786
   Xextent: 0.36123174
   team: 2
+  MoveSystem: {fileID: 4684629789057445058}
 --- !u!64 &1290329431
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -125,3 +127,22 @@ MonoBehaviour:
   smoothing: 7
   targets: []
   current: 0
+  moving: 0
+--- !u!114 &1298243149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2922133538091367307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222572233d4b79478fc15d24d607a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Range: 2
+  HP: 2
+  DMG: 2
+  total_AP: 2
+  remaining_AP: 2
+  Knight: 1

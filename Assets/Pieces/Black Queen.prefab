@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2210876850612411705}
   - component: {fileID: 1436870285}
   - component: {fileID: 7422617421791575804}
+  - component: {fileID: 668809210}
   m_Layer: 9
   m_Name: Black Queen
   m_TagString: Untagged
@@ -96,6 +97,7 @@ MonoBehaviour:
   Yextent: 0.7073648
   Xextent: 0.68832594
   team: 2
+  MoveSystem: {fileID: 7422617421791575804}
 --- !u!64 &1436870285
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -125,3 +127,22 @@ MonoBehaviour:
   smoothing: 7
   targets: []
   current: 0
+  moving: 0
+--- !u!114 &668809210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884421042372815796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222572233d4b79478fc15d24d607a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Range: 3
+  HP: 3
+  DMG: 3
+  total_AP: 2
+  remaining_AP: 2
+  Knight: 0

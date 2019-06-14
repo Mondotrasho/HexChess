@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6646447912451687578}
   - component: {fileID: 794125109}
   - component: {fileID: 2682774729673816138}
+  - component: {fileID: 2076370229}
   m_Layer: 9
   m_Name: White King
   m_TagString: Untagged
@@ -96,6 +97,7 @@ MonoBehaviour:
   Yextent: 0.7615885
   Xextent: 0.5478996
   team: 1
+  MoveSystem: {fileID: 2682774729673816138}
 --- !u!64 &794125109
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -125,3 +127,22 @@ MonoBehaviour:
   smoothing: 7
   targets: []
   current: 0
+  moving: 0
+--- !u!114 &2076370229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522068837520423063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222572233d4b79478fc15d24d607a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Range: 1
+  HP: 6
+  DMG: 1
+  total_AP: 2
+  remaining_AP: 2
+  Knight: 0

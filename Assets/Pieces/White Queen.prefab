@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7365610346730949827}
   - component: {fileID: 341741490}
   - component: {fileID: 5171467301177097363}
+  - component: {fileID: 1731845719}
   m_Layer: 9
   m_Name: White Queen
   m_TagString: Untagged
@@ -96,6 +97,7 @@ MonoBehaviour:
   Yextent: 0.7073648
   Xextent: 0.68832594
   team: 1
+  MoveSystem: {fileID: 5171467301177097363}
 --- !u!64 &341741490
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -125,3 +127,22 @@ MonoBehaviour:
   smoothing: 7
   targets: []
   current: 0
+  moving: 0
+--- !u!114 &1731845719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3807898097691291466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222572233d4b79478fc15d24d607a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Range: 3
+  HP: 3
+  DMG: 3
+  total_AP: 2
+  remaining_AP: 2
+  Knight: 0
